@@ -13,7 +13,6 @@ async def get_xrp_usdt_price():
                 price = float(data['price'])
                 return price
             else:
-                await asyncio.sleep(5)
                 raise Exception(
                     'Не удалось получить цену XRP/USDT от Binance.')
 
@@ -38,6 +37,11 @@ async def main():
                     'Цена XRP/USDT упала на 1% от '
                     f'максимальной цены за последний час: {max_price}')
                 max_price = 0.0
+            diff = round((max_price/xrp_usdt_price - 1) * 100, 2)
+            print(
+                f'Максимальная цена {max_price}, '
+                f'текущая {xrp_usdt_price} %{diff}')
+            await asyncio.sleep(10)
         except Exception as e:
             print(f'Произошла ошибка: {e}')
 
