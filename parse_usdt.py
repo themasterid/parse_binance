@@ -8,13 +8,11 @@ HTTP_OK = 200
 async def get_xrp_usdt_price():
     async with aiohttp.ClientSession() as session:
         async with session.get(XRPUSDT) as response:
-            if response.status == HTTP_OK:
-                data = await response.json()
-                price = float(data['price'])
-                return price
-            else:
+            if response.status != HTTP_OK:
                 raise Exception(
                     'Не удалось получить цену XRP/USDT от Binance.')
+            data = await response.json()
+            return float(data['price'])
 
 
 async def main():
